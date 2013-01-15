@@ -1,0 +1,20 @@
+<% provide(:title, "About") %>
+<% provide(:desc, "All about the Camping Price Search website") %>
+
+<div class="span12">
+  <h1>About Camping Price Search</h1>
+  <p class="static-content">Camping Price Search isn't an especially complicated website. We provide a nice, clean interface to search all the best outdoor retail merchants for whatever camping, backpacking or hiking gear you might want.</p>
+  <p class="static-content">We also let you create price alerts, so that you can find that camping, backpacking or hiking gear at the ideal price.</p>
+  <p class="static-content">We have a relationship with a number of different retailers, which are listed below.</p>
+  <ul>
+    <% Merchant.all.each do |merch| %>
+      <li class="fonted">
+        <%= link_to merch.merchant_name, merch.merchant_url, target: '_blank', rel: 'nofollow' %>
+      </li>
+    <% end %>
+  </ul>
+  <p class="static-content">If you happen to be a merchant that's not listed here, and you want to be, you can <%= link_to "contact us", contact_path %>, and we'll talk.</p>
+  <br />
+  <br />
+  <br />
+</div>

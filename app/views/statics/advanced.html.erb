@@ -1,0 +1,61 @@
+<% provide(:title, "Advanced Search Form") %>
+<% provide(:desc, "") %>
+
+<div class="span12">
+  <div class="row">
+    <div class="span12">
+      <h1>Advanced Search Form</h1>
+    </div>
+  </div>
+  <%= form_tag root_path, :method => 'get', id: 'advanced-search-form' do %>
+    <div class="row">
+      <div class="span5">
+
+        <%= label_tag :q, "Query" %>
+        <%= text_field_tag :q, params[:q], class: 'advanced-query' %>
+
+        <%= label_tag :b, "Brand" %>
+        <%= text_field_tag :b, params[:b], class: 'advanced-brand' %>
+
+        <%= label_tag :s, "Only Items On Sale" %>
+        <%= select_tag :s, options_for_select([["Yes", 1], ["No", 0]], :selected => params[:s]), :include_blank => true, class: 'advanced-sale' %>
+
+        <%= label_tag :min, "Price Range (Minimum - Maximum)" %>
+        <p class="advanced-min-to-max">
+          $ <%= text_field_tag :min, params[:min], class: 'advanced-min' %> - $
+          <%= text_field_tag :max, params[:max], class: 'advanced-max' %>
+        </p>
+
+        <%= label_tag :o, "Sort Order" %>
+        <%= select_tag :o, options_for_select([["Price (descending)", 'Sale+Price%7Cdesc'], ["Price (ascending)", 'Sale+Price'], ["Merchant Name (descending)", 'Merchant+Name%7Cdesc'], ["Merchant Name (ascending)", 'Merchant+Name']], :selected => params[:o]), :include_blank => true, class: 'advanced-order' %><br /><br />
+
+        <%= submit_tag "Search", :name => nil, class: 'btn btn-info' %>
+      </div>
+      <div class="span7">
+        <p class="these-merchants">These Merchants Only</p>
+        <input type="button" class="check-all-btn btn btn-info btn-mini" value="uncheck all">
+        <ul class="advanced-merchants">
+          <% Merchant.all.each do |merchant| %>
+            <li>
+              <%= check_box_tag 'merchants[]', merchant.merchant_id, {}, id: dom_id(merchant), class: 'merchant-checkbox' %>
+              <%= label_tag dom_id(merchant), merchant.merchant_name.gsub(".com", "") %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+
+$(document).ready(function(){
+    $('.check-all-btn:button').toggle(function(){
+        $('input:checkbox').removeAttr('checked');
+        $(this).val('check all');
+    },function(){
+        $('input:checkbox').attr('checked','checked');
+        $(this).val('uncheck all')
+    })
+})
+</script>

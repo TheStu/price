@@ -1,0 +1,31 @@
+<h1>Listing alerts</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Product sku</th>
+    <th>Merchant</th>
+    <th>Max price</th>
+    <th>Currency</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @alerts.each do |alert| %>
+  <tr>
+    <td><%= alert.user_id %></td>
+    <td><%= alert.product_sku %></td>
+    <td><%= alert.merchant_id %></td>
+    <td><%= alert.max_price %></td>
+    <td><%= alert.currency %></td>
+    <td><%= link_to 'Show', alert %></td>
+    <td><%= link_to 'Edit', edit_alert_path(alert) %></td>
+    <td><%= link_to 'Destroy', alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Alert', new_alert_path %>

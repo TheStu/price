@@ -1,0 +1,19 @@
+<div class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <%= link_to 'Camping Price Search <img src="/assets/logo.png"/>'.html_safe, root_path, class: "brand" %>
+      <ul class="nav pull-left">
+        <li><%= link_to '<i class="icon-zoom-in link-icon"></i> Advanced Search'.html_safe, advanced_path %></li>
+      </ul>
+      <ul class="nav pull-right header-user-ul">
+      <% if user_signed_in? %>
+        <li><%= link_to '<i class="icon-user link-icon"></i> My Price Alerts'.html_safe, user_path(current_user) %></li>
+        <li><%= link_to '<i class="icon-off link-icon"></i> Sign Out'.html_safe, destroy_user_session_path, method: "delete" %></li>
+      <% else %>
+        <li><%= link_to '<i class="icon-plus-sign link-icon"></i> Sign Up'.html_safe, new_user_registration_path %></li>
+        <li><%= link_to '<i class="icon-off link-icon"></i> Sign In'.html_safe, new_user_session_path %></li>
+      <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

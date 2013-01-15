@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @alert.user_id %>
+</p>
+
+<p>
+  <b>Product sku:</b>
+  <%= @alert.product_sku %>
+</p>
+
+<p>
+  <b>Merchant:</b>
+  <%= @alert.merchant_id %>
+</p>
+
+<p>
+  <b>Max price:</b>
+  <%= @alert.max_price %>
+</p>
+
+<p>
+  <b>Currency:</b>
+  <%= @alert.currency %>
+</p>
+
+
+<%= link_to 'Edit', edit_alert_path(@alert) %> |
+<%= link_to 'Back', alerts_path %>

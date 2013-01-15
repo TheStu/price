@@ -1,0 +1,139 @@
+<script>
+$(document).ready(function () {
+  fieldToggle('.result');
+});
+
+  var fieldToggle = function(fieldGroup) {
+  fieldGroupObj = $(fieldGroup);
+  fieldGroupObj.each( function(index) {
+    var thisObj = $(this);
+    var toggleCheckBox = thisObj.find('input:checkbox:first');
+    var toggleCandidates = thisObj.find('label, button, input, textfield, ol.selectlist, select').not('input:checkbox:first, .excluded');
+    toggleCandidates.attr('disabled', true);
+    toggleCandidates.addClass('disabled');
+    thisObj.delegate(':checkbox', 'change', function() {
+      if(toggleCheckBox.is(':checked')) {
+        toggleCandidates.removeAttr('disabled');
+        toggleCandidates.removeClass('disabled');
+      } else {
+        toggleCandidates.attr('disabled', true);
+        toggleCandidates.addClass('disabled');
+      }
+    });
+  });
+}
+</script>
+
+<% provide(:title, "home") %>
+<% provide(:desc, "") %>
+
+
+<% if params[:q].present? %>
+  <div class="span9">
+    <%= form_tag root_path, :method => 'get', id: 'results-search-form' do %>
+      <%= text_field_tag :q, params[:q], class: 'results-query' %>
+      <%= submit_tag "Search", :name => nil, class: 'btn btn-info results-search-btn' %>
+
+    <% end %>
+    <h1 class="results-h1"><%= @results.count %> result<%= @results.count > 1 ? "s" : "" %> for '<%= params[:q] %>'</h1>
+    <%= form_tag alerts_path do %>
+      <% if can? :create, Alert %>
+        <div class="well">
+          <%= label_tag :best_price, 'Max Price: $', class: 'max-price-label' %>
+          <%= text_field_tag :best_price %><br />
+          <%= submit_tag 'Creat Price Alerts For Checked Gear', class: 'float-left' %>
+          <a href="#alertExplain" role="button" class="whats-this-btn" data-toggle="modal">What's This?</a>
+
+          <div id="alertExplain" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Price Alerts Explained</h3>
+            </div>
+            <div class="modal-body">
+              <p class="fonted">The price alert feature works like this...</p><br />
+              <ol class="whats-this-ol">
+                <li class="fonted">You check the boxes beside the pictures of the gear items you want to get a price alert for.</li>
+                <li class="fonted">You fill in the 'Max Price' box with the maximum price you want to pay for those gear items you checked.</li>
+                <li class="fonted">Click on the 'Create Price Alerts For Checked Gear' button.</li>
+                <li class="fonted">We'll monitor the gear items you selected, and if the price of those items ever gets to the price you set or below it, we'll send you an email letting you know.</li>
+              </ol>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="well">
+          <p>If you <%= link_to "create an account", new_user_registration_path %> (or <%= link_to "sign in", new_user_session_path %> to an account you already have) you'll see a handy form right here for creating price alerts, which is where you tell us what price you want to pay, and we send you an email if any of the gear you select from the search results ever gets as low as that price.</p>
+        </div>
+      <% end %>
+      <table class="results-table">
+        <% @results.each do |result| %>
+          <tr class="result">
+            <% if can? :create, Alert %>
+              <td class="checkbox-td">
+                <input type="checkbox" name="selection" value="">
+                <%= hidden_field_tag "product_skus[]", result['Product_SKU'] %>
+                <%= hidden_field_tag "merchant_ids[]", result['Merchant_Id'] %>
+                <%= hidden_field_tag "product_names[]", pretty_name(result) %>
+              </td>
+            <% end %>
+            <td class="picture-td">
+              <span class="lifted drop-shadow">
+                <%= link_to image_tag(result['Thumbnail_Image'], alt: "#{pretty_name(result)}", class: 'results-image'), result['Buy_URL'], rel: 'nofollow', target: '_blank' %>
+              </span>
+            </td>
+            <td class="results-info">
+              <%= link_to pretty_name(result), result['Buy_URL'], rel: 'nofollow', target: '_blank', class: 'results-link' %><br />
+              <span class="results-categories">
+                <% if result['Department_Name'].present? %>
+                  <%= result['Department_Name'] %>
+                <% end %>
+                <% if result['Category_Name'].present? %>
+                  <span class="cat-pointer">></span> <%= result['Category_Name'] %>
+                <% end %>
+                <% if result['Subcategory_Name'].present? %>
+                  <span class="cat-pointer">></span> <%= result['Subcategory_Name'] %>
+                <% end %>
+              </span>
+              <%= content_tag :p, truncate(result['Abbreviated_Description'], :length => 150, :omission => " ..."), class: 'results-desc' %>
+              <% if result['Sale_Price'] == result['Retail_Price'] %>
+                <%= link_to result['Retail_Price'], result['Buy_URL'], rel: 'nofollow', target: '_blank', class: 'results-sale-price' %>
+              <% else %>
+                <%= content_tag :p, result['Retail_Price'], class: 'results-retail-price' %>
+                <%= link_to result['Sale_Price'], result['Buy_URL'], rel: 'nofollow', target: '_blank', class: 'results-sale-price' %>
+              <% end %>
+              <%= content_tag :p, "from #{content_tag :span, merch_name(result), class: 'merchant'}".html_safe, class: 'results-merch-name' %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+  <div class="span3">
+    <h3 class="h-margin">Spread the Word</h3>
+      <div class="fb-like" data-href="http://www.campingpricesearch.com" data-send="false" data-layout="button_count" data-width="90" data-show-faces="false"></div>
+      <div class="social-bump"></div>
+      <div class="g-plusone" data-size="medium" data-href="http://www.campingpricesearch.com"></div>
+      <div class="social-bump"></div>
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.campingpricesearch.com">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      <div class="social-bump"></div>
+      <su:badge layout="1"></su:badge>
+      <h3>Sites We Like</h3>
+      <ul class="sites-we-like">
+        <li><%= link_to "#{image_tag("camping-recipes.jpg")} Camping Recipes".html_safe, "http://www.campingrecipes.co", target: '_blank' %></li>
+      </ul>
+  </div>
+<% else %>
+  <div class="span12">
+    <div class="home-paramless">
+      <%= form_tag root_path, :method => 'get', id: 'home-search-form' do %>
+        <%= text_field_tag :q, params[:q], class: 'home-query' %>
+        <%= submit_tag "Search", :name => nil, class: 'btn btn-info home-search-btn' %>
+      <% end %>
+      <p class="about-pic">Photo by <%= link_to "Matthew Kirkland", 'http://www.flickr.com/photos/simpologist/1252040745/', target: '_blank', rel: 'nofollow' %></p>
+    </div>
+  </div>
+<% end %>

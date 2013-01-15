@@ -1,0 +1,24 @@
+<% provide(:title, "New Price Alert") %>
+<% provide(:desc, "") %>
+
+<div class="span12">
+  <h1>New Price Alert</h1>
+
+  <div class="well">
+    <p>You selected <%= @selected.count %> gear items from the search results. When the price of <%= @selected.count == 1 ? "that selected item" : "any of those selected items" %> gets as low or lower than the price you enter below, we'll send you an email letting you know.</p>
+  </div>
+
+  <%= form_tag alerts_path do %>
+
+    <% @selected.each do |selection| %>
+        <%= hidden_field_tag 'selections[]', selection %>
+    <% end %>
+    <div class="field">
+      <%= label_tag :best_price, 'Max Price: $', class: 'max-price-label' %>
+      <%= text_field_tag :best_price %><br /><br />
+    </div>
+    <div class="actions">
+      <%= submit_tag "Create Price Alert" %>
+    </div>
+  <% end %>
+</div>

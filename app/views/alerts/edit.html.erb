@@ -1,0 +1,32 @@
+<h1>Editing alert</h1>
+
+<%= form_for(@alert) do |f| %>
+  <% if @alert.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@alert.errors.count, "error") %> prohibited this alert from being saved:</h2>
+
+      <ul>
+      <% @alert.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="field">
+    <%= f.label :product_sku %><br />
+    <%= f.text_field :product_sku %>
+  </div>
+  <div class="field">
+    <%= f.label :merchant_id %><br />
+    <%= f.number_field :merchant_id %>
+  </div>
+  <div class="field">
+    <%= f.label :max_price %><br />
+    <%= f.number_field :max_price %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  product_sku: MyString
+  merchant_id: 1
+  max_price: 1
+  currency: MyString
+
+two:
+  user_id: 1
+  product_sku: MyString
+  merchant_id: 1
+  max_price: 1
+  currency: MyString

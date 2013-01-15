@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+<head>
+  <title><%= sanitize full_title(yield(:title)) %></title>
+  <meta name="description" content="<%= sanitize meta_desc(yield(:desc)) %>" />
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
+  <%= analytics_init if Rails.env.production? %>
+  <link rel="canonical" href="<%= yield(:canonical) %>" />
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script type="text/javascript">
+  (function() {
+    var li = document.createElement('script'); li.type = 'text/javascript'; li.async = true;
+    li.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + '//platform.stumbleupon.com/1/widgets.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(li, s);
+  })();
+</script>
+
+<script type="text/javascript">
+  (function() {
+    var li = document.createElement('script'); li.type = 'text/javascript'; li.async = true;
+    li.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + '//platform.stumbleupon.com/1/widgets.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(li, s);
+  })();
+</script>
+
+<div id="wrap">
+  <%= render "shared/header" %>
+  <div class="container">
+    <%= render 'shared/flash_messages' %>
+    <div class="row">
+      <%= yield %>
+    </div>
+  </div>
+  <div id="push"></div>
+</div>
+<div id="footer">
+  <div class="container">
+    <%= render 'shared/footer' %>
+  </div>
+</div>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+
+</script>
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+</body>
+</html>

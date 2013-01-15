@@ -1,0 +1,24 @@
+<div>
+  <% flash.each do |key, value| %>
+    <% if value.is_a? Array %>
+      <% value.each do |message| %>
+        <% if message == value.last %>
+          <div class="<%= flash_class(key) %> fade in alert-last">
+            <a href="#" data-dismiss="alert" class="close">×</a>
+            <%= message %>
+          </div>
+        <% else %>
+          <div class="<%= flash_class(key) %> fade in">
+            <a href="#" data-dismiss="alert" class="close">×</a>
+            <%= message %>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="<%= flash_class(key) %> fade in alert-last">
+        <a href="#" data-dismiss="alert" class="close">×</a>
+        <%= value %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
