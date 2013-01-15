@@ -10,8 +10,7 @@ task :update_merchant_table => :environment do
     if Merchant.find_by_merchant_id(merchant.css('Merchant_Id').text).blank? && !['10048', '10665'].include?(merchant.css('Merchant_Id').text)
       m = Merchant.new( :merchant_id => merchant.css('Merchant_Id').text,
                         :merchant_name => merchant.css('Merchant_Name').text,
-                        :merchant_url => merchant.css('Merchant_URL').text,
-                        :datafeed_url => 'http://www.none.com')
+                        :merchant_url => merchant.css('Merchant_URL').text)
       m.save
     end
   end
@@ -30,7 +29,7 @@ task :check_for_price_alert_matches => :environment do
     Alert.where("merchant_id = ?", merchant.merchant_id).each do |alert|
       if results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]").present?
         found = results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]")
-        if [10765, 11481, 10821, 10923, 11027, 10601, 10881].include?(merchant.merchant_id)
+        if [10765, 11481, 10821, 10923, 11027, 10601, 10881, 11419].include?(merchant.merchant_id)
           if found.css('/Retail_Price').text.to_f <= alert.price.to_f
             AlertMailer.registration_confirmation(alert.user, alert, found.css('/Buy_Link').text, found.css('/Retail_Price').text).deliver
             alert.destroy
