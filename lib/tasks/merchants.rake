@@ -7,11 +7,11 @@ task :update_merchant_table => :environment do
 
   doc = Nokogiri::XML(open(url))
   doc.search('//Table1').each do |merchant|
-    if Merchant.find_by_merchant_id(merchant.css('Merchant_Id').text).blank? && merchant.css('Merchant_Id').text != ('10048' or '10665')
+    if Merchant.find_by_merchant_id(merchant.css('Merchant_Id').text).blank? && !['10048', '10665'].include?(merchant.css('Merchant_Id').text)
       m = Merchant.new( :merchant_id => merchant.css('Merchant_Id').text,
                         :merchant_name => merchant.css('Merchant_Name').text,
                         :merchant_url => merchant.css('Merchant_URL').text,
-                        :datafeed_url => 'http://')
+                        :datafeed_url => 'http://www.none.com')
       m.save
     end
   end
@@ -30,7 +30,7 @@ task :check_for_price_alert_matches => :environment do
     Alert.where("merchant_id = ?", merchant.merchant_id).each do |alert|
       if results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]").present?
         found = results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]")
-        if merchant.merchant_id == (10765 or 11481 or 10821 or 10923 or 11027 or 10601 or 10881)
+        if [10765, 11481, 10821, 10923, 11027, 10601, 10881].include?(merchant.merchant_id)
           if found.css('/Retail_Price').text.to_f <= alert.price.to_f
             AlertMailer.registration_confirmation(alert.user, alert, found.css('/Buy_Link').text, found.css('/Retail_Price').text).deliver
             alert.destroy
