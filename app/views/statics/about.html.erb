@@ -7,7 +7,7 @@
   <p class="static-content">We also let you create price alerts, so that you can find that camping, backpacking or hiking gear at the ideal price.</p>
   <p class="static-content">We have a relationship with a number of different retailers, which are listed below.</p>
   <ul>
-    <% Merchant.all.each do |merch| %>
+    <% Merchant.all.order('merchant_name asc').each do |merch| %>
       <li class="fonted">
         <%= link_to merch.merchant_name, merch.merchant_url, target: '_blank', rel: 'nofollow' %>
       </li>

@@ -7,4 +7,6 @@ class Alert < ActiveRecord::Base
   monetize :price_cents
 
   belongs_to :user
+
+  validates_numericality_of :price
 end

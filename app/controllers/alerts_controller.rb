@@ -44,9 +44,18 @@ class AlertsController < ApplicationController
   # POST /alerts.json
   def create
     build_results(params).each do |result|
-      Alert.new(result).save
+      alert = Alert.new(result)
+      if alert.save
+        @success = true
+      else
+        @success = false
+      end
     end
-    redirect_to root_path, notice: 'Price Alerts were successfully created.'
+    if @success == true
+      redirect_to root_path, notice: 'Price alerts were successfully created.'
+    else
+      redirect_to root_path, notice: 'Something went wrong, and one or more of your price alerts was not saved.'
+    end
   end
 
   # PUT /alerts/1
