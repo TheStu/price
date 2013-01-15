@@ -7,10 +7,11 @@ task :update_merchant_table => :environment do
 
   doc = Nokogiri::XML(open(url))
   doc.search('//Table1').each do |merchant|
-    if Merchant.find_by_merchant_id(merchant.css('Merchant_Id').text).blank? && merchant.css('Merchant_Id').text != (10048 or 10665)
+    if Merchant.find_by_merchant_id(merchant.css('Merchant_Id').text).blank? && merchant.css('Merchant_Id').text != ('10048' or '10665')
       m = Merchant.new( :merchant_id => merchant.css('Merchant_Id').text,
                         :merchant_name => merchant.css('Merchant_Name').text,
-                        :merchant_url => merchant.css('Merchant_URL').text)
+                        :merchant_url => merchant.css('Merchant_URL').text,
+                        :datafeed_url => 'http://')
       m.save
     end
   end
