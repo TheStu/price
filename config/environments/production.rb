@@ -64,4 +64,27 @@ Price::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  config.action_mailer.default_url_options = { :host => 'campingpricesearch.com' }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => 'campingpricesearch.com',
+  :user_name            => ENV['email_username'],
+  :password             => ENV['email_password'],
+  :authentication       => 'plain',
+  :enable_starttls_auto => true  }
+
+  # Google Analytics Gem --- replace this with your tracker code
+  GA.tracker = "UA-838194-20"
+
+  # Exception Notification email settings
+  config.middleware.use ExceptionNotifier,
+    sender_address:       %{"Error Notifier" <admin@bestsellingbooks.me>},
+    exception_recipients: %w{stuwashere@gmail.com},
+    ignore_crawlers:      %w{Googlebot bingbot}
 end
