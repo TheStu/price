@@ -15,7 +15,7 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-  gem "bootstrap-sass", "~> 2.2.1.1"
+  gem "bootstrap-sass", "~> 2.2.2.0"
   gem "compass-rails", "~> 1.0.3"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -33,7 +33,7 @@ end
   gem "nokogiri", "~> 1.5.5"
   gem "devise", "~> 2.1.2"
   gem "cancan", "~> 1.6.8"
-  gem "rails_admin", "~> 0.4.0"
+  gem "rails_admin", "~> 0.4.3"
   gem "money-rails", "~> 0.7.1"
 
 # To use ActiveModel has_secure_password

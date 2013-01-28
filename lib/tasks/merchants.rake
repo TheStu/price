@@ -22,7 +22,7 @@ task :check_for_price_alert_matches => :environment do
   require 'nokogiri'
 
   Merchant.all.each do |merchant|
-    url = merchant.datafeed_url
+    url = merchant.datafeed_url + '&from=2012-1-26'
 
     results = Nokogiri::XML(open(url))
 
