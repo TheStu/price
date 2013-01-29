@@ -371,6 +371,7 @@ input[type="submit"] {
 
 .user-alerts-table {
   width: 100%;
+  border-bottom: 1px dotted #ccc;
   td:last-child {
     text-align: right;
     font-weight: bold;

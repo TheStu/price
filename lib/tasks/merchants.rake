@@ -27,16 +27,16 @@ task :check_for_price_alert_matches => :environment do
     results = Nokogiri::XML(open(url))
 
     Alert.where("merchant_id = ?", merchant.merchant_id).each do |alert|
-      if results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]").present?
-        found = results.xpath("//Product[contains(SKU/text(), #{alert.product_sku})]")
+      if results.xpath("/Products/Product[SKU/text()='#{alert.product_sku}']").present?
+        found = results.xpath("/Products/Product[SKU/text()='#{alert.product_sku}']")
         if [10765, 11481, 10821, 10923, 11027, 10601, 10881, 11419].include?(merchant.merchant_id)
-          if found.css('/Retail_Price').text.to_f <= alert.price.to_f
-            AlertMailer.price_alert(alert.user, alert, found.css('/Buy_Link').text, found.css('/Retail_Price').text).deliver
+          if found.xpath('Retail_Price').text.to_f <= alert.price.to_f
+            AlertMailer.price_alert(alert.user, alert, found.xpath('Buy_Link').text, found.xpath('Retail_Price').text).deliver
             alert.destroy
           end
         else
-          if found.css('/Sale_Price').text.to_f <= alert.price.to_f
-            AlertMailer.price_alert(alert.user, alert, found.css('/Buy_Link').text, found.css('/Sale_Price').text).deliver
+          if found.xpath('Sale_Price').text.to_f <= alert.price.to_f
+            AlertMailer.price_alert(alert.user, alert, found.xpath('Buy_Link').text, found.xpath('Sale_Price').text).deliver
             alert.destroy
           end
         end
