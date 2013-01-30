@@ -24,8 +24,8 @@ module ApplicationHelper
   end
 
   def pretty_name(result)
-    if result['Brand'].present?
-      "#{result['Brand'].titleize} #{result['Product_Name'].gsub("#{result['Brand']} ", '').titleize}"
+    if result['Brand_Name'].present?
+      "#{result['Brand_Name'].titleize} #{result['Product_Name'].gsub("#{result['Brand_Name']} ", '').titleize}"
     else
       result['Product_Name'].titleize
     end
