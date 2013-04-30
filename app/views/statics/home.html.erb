@@ -81,7 +81,12 @@ $(document).ready(function () {
             <% end %>
             <td class="picture-td">
               <span class="lifted drop-shadow">
-                <%= link_to image_tag(result['Thumbnail_Image'], alt: "#{pretty_name(result)}", class: 'results-image'), result['Buy_URL'], rel: 'nofollow', target: '_blank' %>
+                <% if result['Thumbnail_Image'].present? %>
+                  <%= link_to image_tag(result['Thumbnail_Image'], alt: "#{pretty_name(result)}", class: 'results-image'), result['Buy_URL'], rel: 'nofollow', target: '_blank' %>
+                <% else %>
+                  <%= image_tag 'default.jpg', alt: "#{pretty_name(result)}", class: 'results-image' %>
+                <% end %>
+
               </span>
             </td>
             <td class="results-info">
