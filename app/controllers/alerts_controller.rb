@@ -43,18 +43,22 @@ class AlertsController < ApplicationController
   # POST /alerts
   # POST /alerts.json
   def create
-    build_results(params).each do |result|
-      alert = Alert.new(result)
-      if alert.save
-        @success = true
-      else
-        @success = false
+    if params[:product_sku].present? && params[:best_price].present?
+      build_results(params).each do |result|
+        alert = Alert.new(result)
+        if alert.save
+          @success = true
+        else
+          @success = false
+        end
       end
-    end
-    if @success == true
-      redirect_to root_path, notice: 'Price alerts were successfully created.'
+      if @success == true
+        redirect_to root_path, notice: 'Price alerts were successfully created.'
+      else
+        redirect_to root_path, notice: 'Something went wrong, and one or more of your price alerts was not saved.'
+      end
     else
-      redirect_to root_path, notice: 'Something went wrong, and one or more of your price alerts was not saved.'
+      redirect_to :back, notice: 'Oops, make sure you enter a max price and check the box beside at least one of the results.'
     end
   end
 
