@@ -7,9 +7,9 @@
 <p>Hey there friend,</p>
 
 <p>Back on <%= pretty_date(@alert.created_at ) %> you told us that you wanted to know when the price of the <%= @alert.product_name %> got below $<%= @alert.price %>. Well good news, <%= Merchant.find_by_merchant_id(@alert.merchant_id).merchant_name %> is offering this piece of gear for just $<%= @found_price %>, and you can <%= link_to "get it here", @buy_link %>.</p>
-<p>And of if you're looking for a low price on any other camping, hiking or backpacking gear, head over to <%= link_to "Camping Price Search", 'http://www.campingpricesearch.com' %>.
+<p>Lastly, if you want to find more low low prices for any other camping, backpacking or hiking gear, head to <%= link_to "Camping Price Search", 'http://www.campingpricesearch.com' %> right now!</p>
 </br>
 </br>
 </br>
-<p style="font-size: 11px;color: #999;padding-top: 20px">And just so you know, we've deleted this price alert, so you wont get this specific email again.</p>
+<p style="font-size: 12px;color: #777;padding-top: 20px">And just so you know, we've deleted this price alert, so you wont get this specific email again.</p>
 </body>
